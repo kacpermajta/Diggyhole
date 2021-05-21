@@ -12,15 +12,16 @@ public class agentController : MonoBehaviour
     float moveSpeed = 0.04f;
     float jumpSpeed = 0.03f;
     float swaySpeed = 0.03f;
-    float leapSpeed = 0.07f;
+    float leapSpeed = 0.05f;
     float gravity = 0.03f;
+    public Rigidbody2D m_Rigidbody2D;
 
-
-    public CharacterController thisController;
+   // public CharacterController thisController;
     public Animator thisAnimator;
+    public bool isGrounded;
     public bool currentAgent;
     public float jumping, sway;
-    float vertical, horizontal;
+    public float vertical, horizontal;
     public bool facingLeft, melee;
     public bool attack;
     public float leap;
@@ -33,6 +34,8 @@ public class agentController : MonoBehaviour
 
     public crossfireController crossfireComp;
     public weaponController weaponComp;
+
+    private Vector3 m_Velocity = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +51,25 @@ public class agentController : MonoBehaviour
         attacking = 0;
         //running = thisAnimator.GetParameter(1);
         //airborne = thisAnimator.GetParameter(2);
+    }
+
+    private void FixedUpdate()
+    {
+        bool wasGrounded = isGrounded;
+        isGrounded = false;
+
+        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+        // This can be done using layers instead but Sample Assets will not overwrite your project settings.
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + new Vector3(0,-0.65f), 0.6f);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject)
+            {
+                isGrounded = true;
+ //               if (!wasGrounded)
+ //                   OnLandEvent.Invoke();
+            }
+        }
     }
 
     // Update is called once per frame
@@ -142,8 +164,9 @@ public class agentController : MonoBehaviour
             }
 
 
-            if (thisController.isGrounded)
+            if (isGrounded)
             {
+                //vertical = 0;
                 thisAnimator.SetBool("sway", false);
                 thisAnimator.SetBool("airborne", false);
                 jumping = 0;
@@ -163,6 +186,8 @@ public class agentController : MonoBehaviour
             }
             else
             {
+                if (Mathf.Abs(m_Rigidbody2D.velocity.x) < 0.2f)
+                    leap = 0;
                 thisAnimator.SetBool("airborne", true);
                 if (jumping > 0 && leap == 0 && jumping < swayWindow)
                 {
@@ -214,7 +239,19 @@ public class agentController : MonoBehaviour
 
             }
 
-            thisController.Move(new Vector3(horizontal, vertical, 0));
+            if(horizontal!=0  && isGrounded)
+            {
+                //if (Mathf.Abs(m_Rigidbody2D.velocity.x) < 4f)
+                    vertical += jumpSpeed;
+            }
+
+            // Move the character by finding the target velocity
+            Vector3 targetVelocity = new Vector2(150*horizontal, 100 * vertical);
+            // And then smoothing it out and applying it to the character
+            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, .05f);
+
+
+            //thisController.Move(new Vector3(horizontal, vertical, 0));
 
         }
 
