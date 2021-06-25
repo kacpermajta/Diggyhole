@@ -12,7 +12,9 @@ public class groundController : MonoBehaviour
     private List<Edge> edges = new List<Edge>();
     private List<Vector2> points = new List<Vector2>();
     public PolygonCollider2D[] polygonColliders;
-    private Vector3[] vertices;
+    public Vector3[] vertices;
+    public int[] triangles;
+
     // public Mesh colliders;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +23,7 @@ public class groundController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
@@ -32,13 +34,13 @@ public class groundController : MonoBehaviour
 
                 //Debug.Log(pointedArea);
 
-                int[] triangles = surface.triangles;
+                // = surface.triangles;
               //  int[] trianglesC = colliders.triangles;
                 int[] trianglesNew = new int[triangles.Length];
 
             //    int[] trianglesCNew = new int[trianglesC.Length];
 
-                Vector3[] vertices = surface.vertices;
+                //Vector3[] vertices = surface.vertices;
                 List<int> erased = new List<int>();
                 for (int i = 0; i < vertices.Length; i++)
                 {
@@ -46,50 +48,59 @@ public class groundController : MonoBehaviour
                     {
                         vertices[i].x = -100;
                         erased.Add(i);
+
                     }
                 }
-                Debug.Log(pointedArea+"; usuniete: "+erased.Count);
-                int newCount = 0;
+                //Debug.Log(pointedArea+"; usuniete: "+erased.Count);
+                //int newCount = 0;
                 for (int j = 0; j < triangles.Length; j += 3)
                 {
-                    bool inRange=false;
-                    for (int i = 0; i < erased.Count; i++)
+                    if (triangles[j] != triangles[j + 1])
                     {
-
-                        if (triangles[j] == erased[i] || triangles[j + 1] == erased[i] || triangles[j + 2] == erased[i])
+                        bool inRange = false;
+                        for (int i = 0; i < erased.Count; i++)
                         {
-                            inRange = true;
-                            break;
+
+                            if (triangles[j] == erased[i] || triangles[j + 1] == erased[i] || triangles[j + 2] == erased[i])
+                            {
+                                inRange = true;
+                                break;
+                            }
+
                         }
+                        if (!inRange)
+                        {
+                            trianglesNew[j] = triangles[j];
+                            trianglesNew[j + 1] = triangles[j + 1];
+                            trianglesNew[j + 2] = triangles[j + 2];
 
-                    }
-                    if (!inRange)
-                    {
-                        trianglesNew[newCount] = triangles[j];
-                        trianglesNew[newCount + 1] = triangles[j + 1];
-                        trianglesNew[newCount + 2] = triangles[j + 2];
+                            //polygonColliders[j / 3] = polygonColliders[j/3];
 
-                        polygonColliders[newCount / 3] = polygonColliders[j/3];
-
-                        newCount += 3;
-                    }
-                    else 
-                    {
-                        polygonColliders[j / 3].enabled = false;
+                            //newCount += 3;
+                        }
+                        else
+                        {
+                            polygonColliders[j / 3].enabled = false;
+                            trianglesNew[j] = 0;
+                            trianglesNew[j + 1] = 0;
+                            trianglesNew[j + 2] = 0;
+                        }
                     }
                 }
 
 
 
 
-                Debug.Log(pointedArea + "; usuniete: " + erased.Count+"; newmesh size: "+newCount);
+                //Debug.Log(pointedArea + "; usuniete: " + erased.Count+"; newmesh size: "+newCount);
 
                 surface.triangles = trianglesNew;
 
+                triangles = trianglesNew;
+               //vertices = surface.vertices
                 gameObject.GetComponent<MeshFilter>().mesh = surface;
 
 
-            //    colliders.triangles = trianglesCNew;
+                //    colliders.triangles = trianglesCNew;
                 //generate();
 
                 //gameObject.GetComponent<PolygonCollider2D>(). = colliders;

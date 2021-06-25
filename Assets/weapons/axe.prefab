@@ -93,3 +93,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missile: {fileID: 0}
+  range: 1.5
+  force: 2
+  pierce: 0
+  knockback: 0
+  twoHanded: 0
+  thrust: 0
+  melee: 1
+  strikeTimes:
+  - 0.15
+  attackTime: 1.1

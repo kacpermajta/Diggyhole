@@ -94,3 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
+  range: 0
+  force: 2
+  pierce: 0
+  knockback: 2
+  twoHanded: 0
+  thrust: 0
+  strikeTimes:
+  - 0
+  attackTime: 1.1
