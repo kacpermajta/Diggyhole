@@ -25,7 +25,7 @@ public class agentController : MonoBehaviour
     public float jumping, sway, blasted, blaststart;
     public float vertical, horizontal;
     public bool facingLeft, melee;
-    public int attack;
+    public int attack, attackmove;
     public bool landing;
     public float leap;
     public float attacking;
@@ -44,6 +44,19 @@ public class agentController : MonoBehaviour
 
     public bool airborneVal;
     public float airborneNum;
+    public int actionPts;
+    public float outro;
+    public troop troopLogic;
+    public team teamLogic;
+
+    //display values
+    public Color auraColor;
+    public ParticleSystem auragone;
+
+    public ParticleSystem impactPart;
+
+    public float impact;
+    private IEnumerator impactCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -63,19 +76,26 @@ public class agentController : MonoBehaviour
         facingLeft = false;
         leap = 0;
         melee = true;
-        thisAnimator.SetBool("melee", false);
-        attack = -1;
+        thisAnimator.SetBool("noTrace", true);
+        thisAnimator.SetBool("dead", false);
+        attack = 0;
+        attackmove = 0;
         attacking = 0;
         //running = thisAnimator.GetParameter(1);
         //airborne = thisAnimator.GetParameter(2);
+        if(!forcegrounded)
+            curWpn = EquipWeapon(1);
     }
 
     private void FixedUpdate()
     {
+
         if (forcegrounded)
             isGrounded = true;
         else
         {
+            if (hp > 0 && transform.position.y < 0)
+                Damage(1);
 
             bool wasGrounded = isGrounded;
             isGrounded = false;
@@ -95,9 +115,11 @@ public class agentController : MonoBehaviour
         }
 
         if (airborneVal)
-            airborneNum = ReachTo(airborneNum, 1);
+            airborneNum = ReachTo(airborneNum, 12,5);
+        else if (airborneNum > 1f)
+            airborneNum = 1f;
         else
-            airborneNum = ReachTo(airborneNum, 0);
+            airborneNum = ReachTo(airborneNum, 0,5);
         thisAnimator.SetFloat("airbornenum", airborneNum);
 
         /*
@@ -124,12 +146,18 @@ public class agentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         
         
-        if (blasted > 0)
+        if (blasted != 0)
         {
             setAirborne(true);
-            if (!thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("shoot"))
+            if (attacking > 0)
+            {
+                ResolveAttack();
+            }
+            else
+            //if (!thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("shoot"))
             {
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -151,10 +179,11 @@ public class agentController : MonoBehaviour
                 blaststart -= Time.deltaTime;
             }
             else 
-            { 
+            {
                 //blasted -= Time.deltaTime;
-                if(isGrounded)
-                    blasted -= Time.deltaTime*9;
+                if (isGrounded)
+                    blasted = ReachTo(blasted, 0, 7);
+                    //blasted -= Time.deltaTime*9;
                 vertical -= gravity * Time.deltaTime*9;
 
                 if (Mathf.Abs(m_Rigidbody2D.velocity.magnitude) < 0.1f)
@@ -162,12 +191,26 @@ public class agentController : MonoBehaviour
                     if (!landing)
                     {
                         landing = false;
-                        Damage((int)blasted*10);
+                        Damage(Mathf.Abs((int)blasted*10));
                     }
                     blasted = 0;
                 }
             }
+            if (currentAgent)
+            {
+                if (outro > 0)
+                {
+                    outro -= Time.deltaTime;
+                    if (outro <= 0)
+                    {
+                        SetInactive();
+                        return;
+                    }
 
+                }
+                else if (actionPts <= 0)
+                    outro = 4;
+            }
         }
         else
         {
@@ -186,37 +229,43 @@ public class agentController : MonoBehaviour
             }
             else
             {
+                
+                if(outro>0)
+                {
+                    outro -= Time.deltaTime;
+                    if(outro<=0)
+                    {
+                        SetInactive();
+                        return;
+                    }
+
+                }
+                else if (actionPts <= 0)
+                    outro = 4;
                 horizontal = 0;
                 vertical = -gravity;
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (attacking <= 0&& actionPts>0)
                 {
-                    curWpn = EquipWeapon(0);
-                    //thisAnimator.SetBool("melee", true);
-                    //melee = true;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    curWpn = EquipWeapon(1);
-                    //thisAnimator.SetBool("melee", true);
-                    //melee = true;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    curWpn = EquipWeapon(2);
-                    //thisAnimator.SetBool("melee", true);
-                    //melee = true;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha4))
-                {
-                    curWpn = EquipWeapon(3);
-                    //thisAnimator.SetBool("melee", false);
-                    //melee = false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha5))
-                {
-                    curWpn = EquipWeapon(4);
-                    //thisAnimator.SetBool("melee", false);
-                    //melee = false;
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        curWpn = EquipWeapon(0);
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        curWpn = EquipWeapon(1);
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        curWpn = EquipWeapon(2);
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha4))
+                    {
+                        curWpn = EquipWeapon(3);
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha5))
+                    {
+                        curWpn = EquipWeapon(4);
+                    }
                 }
                 thisAnimator.SetBool("running", false);
 
@@ -252,32 +301,47 @@ public class agentController : MonoBehaviour
                         }
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (Input.GetKeyDown(KeyCode.Mouse0)&&actionPts>0&&weaponComp.cost>0)
                 {
                     thisAnimator.SetBool("attack", true);
                     attacking = weaponComp.attackTime;
                     attack = 0;
+                    attackmove = 0;
+                    weaponComp.traceEnabler = 0;
+                    weaponComp.traceDisabler = 0;
+
                 }
 
 
                 if (isGrounded)
                 {
+                    if (impact > 0)
+                    {
+
+                        impactCoroutine = GenerateBlastAfter(0.5f,transform.position,impact, impact, impact*2, impact/4);
+                        StartCoroutine(impactCoroutine);
+                        impact = 0;
+                    }
                     //vertical = 0;
+
                     thisAnimator.SetBool("sway", false);
+                    sway = 0;
                     setAirborne(false);
                     jumping = 0;
-                    sway = 0;
                     leap = 0;
-                    if (Input.GetKey(KeyCode.W))
+                    if (airborneNum < 0.5)
                     {
-                        jumping = 0.1f;
-                        setAirborne(true);
-                    }
-                    if (Input.GetKey(KeyCode.Space))
-                    {
-                        jumping = 0.1f;
-                        leap = 1;
-                        setAirborne(true);
+                        if (Input.GetKey(KeyCode.W))
+                        {
+                            jumping = 0.1f;
+                            setAirborne(true);
+                        }
+                        if (Input.GetKey(KeyCode.Space))
+                        {
+                            jumping = 0.1f;
+                            leap = 1;
+                            setAirborne(true);
+                        }
                     }
                 }
                 else
@@ -291,6 +355,7 @@ public class agentController : MonoBehaviour
                         {
                             sway = 0.1f;
                             thisAnimator.SetBool("sway", true);
+                            airborneNum = 1;
 
                         }
                     }
@@ -311,6 +376,23 @@ public class agentController : MonoBehaviour
                         {
                             sway = 0;
                             thisAnimator.SetBool("sway", false);
+                        }
+                    }
+                    else if(airborneNum>10)
+                    {
+                        if (Input.GetKey(KeyCode.S))
+                        {
+                           
+                            thisAnimator.SetBool("down", true);
+                            vertical *= 3;
+                            impact += Time.deltaTime;
+                        }
+                        else
+                        {
+
+                            thisAnimator.SetBool("down", false);
+                            impact = 0;
+
                         }
                     }
                 }
@@ -357,97 +439,199 @@ public class agentController : MonoBehaviour
 
     public GameObject EquipWeapon(int i)
     {
+
+        return EquipWeapon(weapons[i]);
+    }
+
+    public GameObject EquipWeapon(GameObject prefab)
+    {
         GameObject.Destroy(curWpn);
-        thisAnimator.SetBool("melee", true);
-        GameObject newWpn = GameObject.Instantiate(weapons[i], HandBone);
+        GameObject newWpn = GameObject.Instantiate(prefab, HandBone);
         weaponComp = newWpn.GetComponent<weaponController>();
         thisAnimator.SetBool("twoHanded", weaponComp.twoHanded);
 
         thisAnimator.SetBool("thrust", weaponComp.thrust);
-        melee = weaponComp.melee;
-        thisAnimator.SetBool("melee", weaponComp.melee);
-        if (!weaponComp.melee && weaponComp.twoHanded)
+        melee = weaponComp.melee || weaponComp.deployable;
+        thisAnimator.SetBool("noTrace", weaponComp.melee || weaponComp.thrown || weaponComp.deployable);
+        thisAnimator.SetBool("deploy", weaponComp.deployable);
+        thisAnimator.SetBool("thrown", weaponComp.thrown);
+        /*if (!weaponComp.melee && weaponComp.twoHanded)
             thisAnimator.SetFloat("rifle", 1f);
         else
 
             thisAnimator.SetFloat("rifle", 0f);
+        */
+        thisAnimator.SetFloat("variant", weaponComp.variant);
+        GameValues.setGui(weaponComp.icon, weaponComp.cost, actionPts, weaponComp.name);
         return newWpn;
-
     }
-    public void Blast(Vector2 location, float range, float force, int damage)
+
+    private IEnumerator BlastAfter(float waitTime, Vector2 location, float range, float force, int damage)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            Blast(location, range, force, damage);
+        }
+    }
+
+    public void Blast(Vector2 location, Vector2 agentlocation, float range, float force, int damage)
     {
         Vector2 hitPoint = Physics2D.ClosestPoint(location, charCollider);
-        Vector2 direction = hitPoint - location;
+        Vector2 direction =  hitPoint - agentlocation;
+        direction.Normalize();
+
 
         Debug.Log(direction);
-        float multipier = (range - direction.magnitude)/ range;
+        float multipier = (range - (hitPoint - location).magnitude)/ range;
         Damage((int)(damage * multipier));
         blasted = force  * multipier;
         horizontal = force * 0.2f * direction.x  * multipier;
         vertical = force * 0.2f * direction.y  * multipier;
         setAirborne(true);
         blaststart = 0.1f;
+        
 
     }
+    public void Blast(Vector2 location, float range, float force, int damage)
+    {
+        Blast(location, location, range, force, damage);
+    }
+
+    public bool CheckTimeline(int counter, float[] timeline)
+    {
+        return counter < timeline.Length && weaponComp.attackTime - attacking >= timeline[counter]
+    }    
     private void ResolveAttack()
     {
+        //Debug.Log(weaponComp.attackTime - attacking);
         attacking -= Time.deltaTime;
+        if (attackmove < weaponComp.movementTimes.Length && weaponComp.attackTime - attacking >= weaponComp.movementTimes[attackmove])
+        {
+            attackmove++;
+            if (weaponComp.backstep != 0)
+            {
+                //Debug.Log("backstep!");
+                Knockback(weaponComp.backstep);
+            }
 
-        if (attack<weaponComp.strikeTimes.Length && attacking <= weaponComp.strikeTimes[attack])
+        }
+        if (weaponComp.traceEnabler < weaponComp.traceStart.Length && weaponComp.attackTime - attacking >= weaponComp.traceStart[weaponComp.traceEnabler])
+        {
+            weaponComp.traceEnabler++;
+            weaponComp.traceImg.enabled = true;  
+        }
+
+        if (weaponComp.traceDisabler < weaponComp.traceEnd.Length && weaponComp.attackTime - attacking >= weaponComp.traceEnd[weaponComp.traceDisabler])
+        {
+            weaponComp.traceDisabler++;
+            weaponComp.traceImg.enabled = false;
+        }
+
+        if (attack<weaponComp.strikeTimes.Length && weaponComp.attackTime-  attacking >= weaponComp.strikeTimes[attack])
         {
             attack ++;
             {
-                if (melee)
+                if (weaponComp.melee)
                 {
                     Vector3 strikepoint = transform.position + crossfireComp.lookingPoint(weaponComp.range, facingLeft);
-                    Debug.Log(strikepoint);
-                    if (weaponComp.pierce == 0f)
+                    //Debug.Log(strikepoint);
+                    GameValues.destructor.Destroy(strikepoint, (int)(25 * weaponComp.blast));
+                    GenerateBlastAt(strikepoint, weaponComp.blast, weaponComp.range, weaponComp.dmg, weaponComp.force);
+
+
+
+
+                }
+                if (weaponComp.missile != null)
+                {
+                    if (weaponComp.deployable)
                     {
-                        GameValues.destructor.Destroy(strikepoint, 25);
+                        Debug.Log("ziuum");
+                        GameObject deployedObject = GameObject.Instantiate(weaponComp.missile, (weaponComp.missile.GetComponent<deployabe>().ObjEntryType == deployabe.entryType.agent) ? transform.position :
+                        new Vector3(crossfireComp.spriteTransform.position.x, crossfireComp.spriteTransform.position.y, 0),
+                        (weaponComp.missile.GetComponent<deployabe>().ObjEntryType == deployabe.entryType.crosshairAngled) ?
+                        Quaternion.Euler(0, 0, 180 * (facingLeft ? -crossfireComp.angle : crossfireComp.angle) / Mathf.PI) : Quaternion.identity);
+
+                        deployedObject.GetComponent<deployabe>().handler.SetValues(weaponComp.blast, weaponComp.force, weaponComp.dmg);
+
                     }
                     else
                     {
-                        GameValues.destructor.Destroy(strikepoint, 25);//, weaponComp.pierce, crossfireComp.angle);
-                    }
-                    foreach (agentController target in GameValues.characters)
-                    {
-                        //transform.position.z = 0;
-                        Collider2D[] colliders = Physics2D.OverlapCircleAll(strikepoint, 1f);
-                        for (int i = 0; i < colliders.Length; i++)
+
+                        GameObject shotFired = GameObject.Instantiate(weaponComp.missile,
+                        new Vector3(crossfireComp.spriteTransform.position.x, crossfireComp.spriteTransform.position.y, 0),
+                        Quaternion.Euler(0, 0, 180 * (facingLeft ? -crossfireComp.angle : crossfireComp.angle) / Mathf.PI));
+
+                        shotFired.GetComponent<missileController>().faceleft = facingLeft;
+                        shotFired.GetComponent<missileController>().SetValues(weaponComp.blast, weaponComp.force, weaponComp.dmg);
+                        if (weaponComp.thrown)
                         {
-                            if (colliders[i].gameObject == target.gameObject && target.gameObject != gameObject)
-                            {
-                                target.Blast(transform.position, weaponComp.range + 1f, 1, 20);
-                                //               if (!wasGrounded)
-                                //                   OnLandEvent.Invoke();
-                            }
+                            weaponComp.sticky = shotFired;
                         }
                     }
                 }
-                else
+                if (weaponComp.knockback != 0)
                 {
-                    GameObject shotFired = GameObject.Instantiate(weaponComp.missile,
-                    new Vector3(crossfireComp.spriteTransform.position.x, crossfireComp.spriteTransform.position.y, 0),
-                    Quaternion.Euler(0, 0, 180 * (facingLeft ? -crossfireComp.angle : crossfireComp.angle) / Mathf.PI));
-
-                    shotFired.GetComponent<missileController>().faceleft = facingLeft;
-
-                    if (weaponComp.knockback > 0)
-                    {
-                        Knockback(weaponComp.knockback);
-                    }
+                    Knockback(weaponComp.knockback);
                 }
             }
         }
 
-        if (attack >= weaponComp.strikeTimes.Length)
+        if (attacking<=0)
         {
 
             attacking = 0;
+            actionPts -= weaponComp.cost;
+            if(actionPts<0)
+            {
+                Damage(-actionPts);
+                actionPts = 0;
+            }
+            if (actionPts<=0)
+            {
+                curWpn = EquipWeapon(GameValues.gameMasterController.blankWpnPrefab);
+            }
+            else
+                GameValues.setGui(weaponComp.icon, weaponComp.cost, actionPts, weaponComp.name);
 
             thisAnimator.SetBool("attack", false);
         }
     }
+    
+    public void GenerateBlastAt(Vector3 strikepoint, float blast, float range, float dmg, float force)
+    {
+        
+
+        foreach (agentController target in GameValues.characters)
+        {
+            //transform.position.z = 0;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(strikepoint, blast);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].gameObject == target.gameObject && target.gameObject != gameObject)
+                {
+                    target.Blast(strikepoint, transform.position, range + blast, force, (int)dmg);//+1, 1, 20);
+
+                    //               if (!wasGrounded)
+                    //                   OnLandEvent.Invoke();
+                }
+            }
+        }
+    }
+
+    private IEnumerator GenerateBlastAfter(float waitTime, Vector3 strikepoint, float blast, float range, float dmg, float force)
+    {
+        bool blasted = false;
+        while (!blasted)
+        {
+            yield return new WaitForSeconds(waitTime);
+            GenerateBlastAt(strikepoint, range, force, dmg, force);
+            blasted = true;
+            impactPart.Emit(15);
+        }
+    }
+
     public void Knockback(float force)
     {
         
@@ -455,7 +639,7 @@ public class agentController : MonoBehaviour
 
         
         
-        blasted = force ;
+        blasted = Mathf.Abs( force) ;
         horizontal = force * 0.2f * direction.x ;
         vertical = force * 0.2f * direction.y ;
         setAirborne(true);
@@ -467,6 +651,40 @@ public class agentController : MonoBehaviour
     public void Damage(int amount)
     {
         hp -= amount;
+
+        auragone.Emit(amount/2);
+        if (hp<=0)
+        {
+            auragone.Emit(30);
+            hp = 0;
+            thisAnimator.SetBool("dead", true);
+            gameObject.GetComponent<Collider2D>().enabled = false;
+            if(teamLogic.character.IndexOf(troopLogic)<=teamLogic.charnum)
+            {
+                teamLogic.charnum--;
+                if (teamLogic.charnum < 0)
+                    teamLogic.charnum = 0;
+            }
+            teamLogic.character.Remove(troopLogic);
+
+            if (teamLogic.character.Count == 0)
+            {
+                if (GameValues.gameMasterController.teams.IndexOf(teamLogic) <= GameValues.gameMasterController.teamnum)
+                {
+                    GameValues.gameMasterController.teamnum--;
+                    if (GameValues.gameMasterController.teamnum < 0)
+                        GameValues.gameMasterController.teamnum = 0;
+                }
+                GameValues.gameMasterController.teams.Remove(teamLogic);
+                if (GameValues.gameMasterController.teams.Count == 1)
+                    GameValues.gameMasterController.EndGame();
+                        
+            }
+            if(currentAgent)
+            {
+                SetInactive();
+            }
+        }
         hpIndicator.text = hp.ToString();
     }
     /// <summary>
@@ -477,19 +695,56 @@ public class agentController : MonoBehaviour
     /// <returns></returns>
     public float ReachTo(float value, float target)
     {
+        return ReachTo(value, target, 1);
+    }
+    public float ReachTo(float value, float target, float multiplier)
+    {
         if (Mathf.Abs(target - value) < Time.deltaTime)
             return target;
         else
         {
             if (value > target)
-                return value - Time.deltaTime;
+                return value - Time.deltaTime*multiplier;
             else
-                return value + Time.deltaTime;
+                return value + Time.deltaTime * multiplier;
         }
     }
-    public void setAirborne(bool value)
+
+        public void setAirborne(bool value)
     {
         airborneVal = value;
         thisAnimator.SetBool("airborne", value);
     }
+    public void SetPreview()
+    {
+        forcegrounded = true;
+        currentAgent = false;
+        transform.localPosition = new Vector3(-0.4f, -1, 0);
+        transform.localScale = new Vector3(13, 13, 1);
+    }
+    public void Entangle(troop curTroop, team curTeam)
+    {
+        teamLogic = curTeam;
+        troopLogic = curTroop;
+        hp = troopLogic.hp;
+        hpIndicator.text = hp.ToString();
+    } 
+    public void SetActive()
+    {
+        crossfireComp.spriteTransform.gameObject.SetActive(true);
+        currentAgent = true;
+        GameValues.gameMasterController.sceneCamera.currenFocus = transform;
+        actionPts = 10;
+        outro = 0;
+        curWpn = EquipWeapon(1);
+        //GameValues.setGui(weaponComp.icon, weaponComp.cost, actionPts, weaponComp.name);
+    }
+    public void SetInactive()
+    {
+        crossfireComp.spriteTransform.gameObject.SetActive(false);
+        currentAgent = false;
+        thisAnimator.SetBool("running", false);
+        GameValues.gameMasterController.startTurn();
+    }
+
 }

@@ -65,7 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\agentController.cs" />
+    <Compile Include="Assets\attackMade.cs" />
     <Compile Include="Assets\crossfireController.cs" />
+    <Compile Include="Assets\deployabe.cs" />
     <Compile Include="Assets\dt\Scripts\Chunk\ChildChunk\IChildChunk.cs" />
     <Compile Include="Assets\dt\Scripts\Chunk\IChunk.cs" />
     <Compile Include="Assets\dt\Scripts\Chunk\PaintableChunk\CollidableChunk\ChunkCollider\IChunkCollider.cs" />
@@ -98,10 +100,16 @@
     <Compile Include="Assets\GameValues.cs" />
     <Compile Include="Assets\groundController.cs" />
     <Compile Include="Assets\MasterControler.cs" />
+    <Compile Include="Assets\MenuCharHandler.cs" />
+    <Compile Include="Assets\MenuHandler.cs" />
+    <Compile Include="Assets\MenuTeamHandler.cs" />
     <Compile Include="Assets\MeshControler.cs" />
     <Compile Include="Assets\missileController.cs" />
-    <Compile Include="Assets\teamCompHandler.cs" />
+    <Compile Include="Assets\sceneHandler.cs" />
+    <Compile Include="Assets\sceneObject.cs" />
     <Compile Include="Assets\weaponController.cs" />
+    <None Include="Assets\audio\SoldierSoundsPack\ReadMe!.txt" />
+    <None Include="Assets\renderonchar.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Unityproj/Diggy hole/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

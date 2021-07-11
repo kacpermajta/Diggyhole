@@ -16,7 +16,7 @@ public class crossfireController : MonoBehaviour
     {
         angleBuildup = 0;
     }
-    private void FixedUpdate()
+    private void Update()
     {
         diff=0;
         if (thisAgent.attacking > 0)
@@ -29,10 +29,10 @@ public class crossfireController : MonoBehaviour
         }
         if (Mathf.Abs(diff) > 0.01)
         {
-            angleBuildup += 2*diff * Time.deltaTime;
+            angleBuildup += 6 * diff * Time.deltaTime;
         }
         else
-            angleBuildup = 0;
+            angleBuildup = (thisAgent.attacking > 0) ? angle:0 ;
         
            
     }
@@ -52,20 +52,20 @@ public class crossfireController : MonoBehaviour
             beardBone.transform.Rotate(0, 0, -angle * 30);
             if (!thisAgent.melee)
             {
-                handBone.transform.Rotate(0, 0, angle * 180 / Mathf.PI + 60);
+                handBone.transform.Rotate(0, 0, angle * 180 / Mathf.PI );
 
             }
             else
             {
-                handBone.transform.Rotate(0, 0, angleBuildup * (180 / Mathf.PI + 60));
+                handBone.transform.Rotate(0, 0, angleBuildup * (180 / Mathf.PI ));
             }
             if(thisAgent.weaponComp.twoHanded)
             {
                 if (!thisAgent.melee)
-                    offhandBone.transform.Rotate(0, 0, angle * 180 / Mathf.PI + 60);
+                    offhandBone.transform.Rotate(0, 0, angle * 180 / Mathf.PI );
                 else
                 {
-                    offhandBone.transform.Rotate(0, 0, angleBuildup * (180 / Mathf.PI + 60));
+                    offhandBone.transform.Rotate(0, 0, angleBuildup * (180 / Mathf.PI ));
                 }
             }
 
