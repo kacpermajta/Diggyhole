@@ -43,12 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 0}
+  name: 
   range: 1
   force: 1
   blast: 0
   dmg: 0
-  pierce: 0
   knockback: 0
   backstep: 0
   twoHanded: 0
@@ -56,15 +55,27 @@ MonoBehaviour:
   melee: 0
   deployable: 0
   thrown: 0
-  sticky: {fileID: 0}
-  strikeTimes: []
-  movementTimes: []
   attackTime: 0
   cost: 0
   variant: 0
+  pierce: 0
+  angleMod: 0
+  missile: {fileID: 0}
+  sticky: {fileID: 0}
   parent: {fileID: 0}
-  name: 
+  offset: {x: 0, y: 0, z: 0}
+  strikeTimes: []
+  movementTimes: []
+  traceStart: []
+  traceEnd: []
+  soundTimes: []
+  traceEnabler: 0
+  traceDisabler: 0
+  soundPlayer: 0
   icon: {fileID: 0}
+  traceImg: {fileID: 0}
+  wpnSource: {fileID: 0}
+  effectClips: []
 --- !u!95 &1218337024
 Animator:
   serializedVersion: 3
@@ -104,7 +115,7 @@ PrefabInstance:
     - target: {fileID: 4949735268639786340, guid: 7c2c7126d1a980540909ea3ceab2894d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.3800001
+      value: -0.758
       objectReference: {fileID: 0}
     - target: {fileID: 4949735268639786340, guid: 7c2c7126d1a980540909ea3ceab2894d,
         type: 3}
@@ -233,15 +244,60 @@ PrefabInstance:
       propertyPath: m_Name
       value: feng_char Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.26670584
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.62352943
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.27058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.62352943
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.27058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5981602438243912421, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5981602438243912421, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5981602438243912421, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
@@ -290,6 +346,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
+      propertyPath: hitClips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: pickedClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: doneClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
       propertyPath: HandBone
       value: 
       objectReference: {fileID: 4770438309223487998}
@@ -302,19 +378,18 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[4]
       value: 
-      objectReference: {fileID: 7504870367290440523, guid: b9e9046beada20b45a8be0b93ffad9c4,
+      objectReference: {fileID: 4761138328946950684, guid: fe7e61acbaa5cfc4ebec3298dd905b88,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[3]
       value: 
-      objectReference: {fileID: 7004296879182596562, guid: 68f4c193d9cd4a346b88c39192a5cad7,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[1]
       value: 
-      objectReference: {fileID: 4761138328946950684, guid: 6f016d22ca280a847b579e560092ba7e,
+      objectReference: {fileID: 7004296879182596562, guid: 68f4c193d9cd4a346b88c39192a5cad7,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
@@ -325,14 +400,150 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[0]
       value: 
-      objectReference: {fileID: 4761138328946950684, guid: fe7e61acbaa5cfc4ebec3298dd905b88,
+      objectReference: {fileID: 4761138328946950684, guid: 6f016d22ca280a847b579e560092ba7e,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[2]
       value: 
+      objectReference: {fileID: 7504870367290440523, guid: b9e9046beada20b45a8be0b93ffad9c4,
+        type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 032a4f39620b7994aa36483d2e211ff1, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9e4c5f2327fc67c49ac5c94471e3107a, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: b3266b78b59e8f348a9e503484cf6e02, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: e5afb3612f411224887c2576b4f8a2db, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2d07eba8eab06cb45898cb11da4a54e2, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1734cebdf2bc02842a4652686c07cf90, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: effc0d496f2c4e144a91033290aefb66, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hitClips.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: 38409f9445b30cf4c8071a75e5a423f3, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d261d5fc8420f024fbd7b0e1d950d3ae, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: c9ccf6cbea8ec0a479e28ccb1f474e5e, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: bc92f9ca5161aab4d970660b7910dea7, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: f3b834e881c44dc4382d47d5cb802931, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: a084b988fa69fe34994047e472f1a708, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e3c778631cb0c449a183b8e80ef7209, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 01c97b38dbbdfb947aff7c91fff1efbe, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: gruntClips.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: d849118e03beaa04896b1ee7a2cd0eb1, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: pickedClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c5c1d4d7b9307c458890a4beb12e4ae, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: doneClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d849118e03beaa04896b1ee7a2cd0eb1, type: 3}
+    - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: weapons.Array.data[5]
+      value: 
       objectReference: {fileID: 7504870367290440523, guid: a8917e165ddebe149af37c8db628f607,
         type: 3}
+    - target: {fileID: 6104411038874018656, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_Text
+      value: Goon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: headBone
+      value: 
+      objectReference: {fileID: 2338878465230661474}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: offhandBone
+      value: 
+      objectReference: {fileID: 8257886824209190301}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: hairBone
+      value: 
+      objectReference: {fileID: 2763141947945593012}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: beardBone
+      value: 
+      objectReference: {fileID: 786993198436845730}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: handBone
+      value: 
+      objectReference: {fileID: 6101197225758290049}
+    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: thisAnimator
+      value: 
+      objectReference: {fileID: 1218337024}
+    - target: {fileID: 5417469653031807645, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3063763490766723837, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -383,41 +594,6 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key1.b
       value: 0.011764706
       objectReference: {fileID: 0}
-    - target: {fileID: 6104411038874018656, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: m_Text
-      value: Goon
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: headBone
-      value: 
-      objectReference: {fileID: 2338878465230661474}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: offhandBone
-      value: 
-      objectReference: {fileID: 8257886824209190301}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: hairBone
-      value: 
-      objectReference: {fileID: 2763141947945593012}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: beardBone
-      value: 
-      objectReference: {fileID: 786993198436845730}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: handBone
-      value: 
-      objectReference: {fileID: 6101197225758290049}
-    - target: {fileID: 5981602437892439973, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: thisAnimator
-      value: 
-      objectReference: {fileID: 1218337024}
     - target: {fileID: 6234440316277309686, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_IsActive
@@ -426,51 +602,6 @@ PrefabInstance:
     - target: {fileID: 8515319993104361694, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.r
-      value: 0.6226415
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.g
-      value: 0.26670584
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key1.r
-      value: 0.62352943
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key1.g
-      value: 0.27058825
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key1.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.62352943
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.27058825
-      objectReference: {fileID: 0}
-    - target: {fileID: 5330402559125902993, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

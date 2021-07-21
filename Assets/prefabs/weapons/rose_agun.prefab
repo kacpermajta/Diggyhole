@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 411828785181002459}
   - component: {fileID: 411828785181002458}
   - component: {fileID: 8783210134975059133}
+  - component: {fileID: -5171541868006376419}
   m_Layer: 0
   m_Name: rose_agun
   m_TagString: Untagged
@@ -94,12 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
+  name: Auto
   range: 0
   force: 1
   blast: 1
   dmg: 10
-  pierce: 0
   knockback: 0
   backstep: 0
   twoHanded: 1
@@ -107,18 +107,18 @@ MonoBehaviour:
   melee: 0
   deployable: 0
   thrown: 0
+  attackTime: 1.1
+  cost: 10
+  variant: 1
+  pierce: 0
+  missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
   sticky: {fileID: 0}
+  parent: {fileID: 0}
   strikeTimes:
   - 0.45
   - 0.67
   - 0.9
   movementTimes: []
-  attackTime: 1.1
-  cost: 10
-  variant: 1
-  parent: {fileID: 0}
-  name: Auto
-  icon: {fileID: 21300000, guid: cdf5bd44c4ce1c748900c7c8e1098392, type: 3}
   traceStart:
   - 0.43
   - 0.6
@@ -127,9 +127,114 @@ MonoBehaviour:
   - 0.47
   - 0.69
   - 0.92
-  traceImg: {fileID: 6704635473557434688}
+  soundTimes:
+  - 0.43
+  - 0.65
+  - 0.88
   traceEnabler: 0
   traceDisabler: 0
+  soundPlayer: 0
+  icon: {fileID: 21300000, guid: cdf5bd44c4ce1c748900c7c8e1098392, type: 3}
+  traceImg: {fileID: 6704635473557434688}
+  wpnSource: {fileID: -5171541868006376419}
+  effectClips:
+  - {fileID: 8300000, guid: 2ff58d9dd782ceb42a7a5a427d95f1e2, type: 3}
+--- !u!82 &-5171541868006376419
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411828785181002456}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5524127650174355537
 GameObject:
   m_ObjectHideFlags: 0

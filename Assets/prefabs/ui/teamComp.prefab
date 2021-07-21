@@ -488,7 +488,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' Team 1'
+  m_Text: ' Team'
 --- !u!1 &8960080385888667058
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,3 +542,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamChar: []
   newCharButton: {fileID: 1763824352194834467}
+  overseer: {fileID: 0}

@@ -12,6 +12,7 @@ public class GameValues : MonoBehaviour
     public static Image weaponIcon;
     public static Text weaponName;
     public static Text ap;
+    public static float musicValue=0.5f;
     public float soundValue;
 
     // Start is called before the first frame update
@@ -30,6 +31,12 @@ public class GameValues : MonoBehaviour
         weaponIcon.sprite = icon;
         weaponName.text = name;
         ap.text = "AP: " + AP + "/" + maxAP;
+    }
+
+    public static void SetMusicVol()
+    {
+
+        GameValues.gameMasterController.audioSource.volume = gameMasterController.thisMenuHandler.musicslider.value;
     }
 
 }

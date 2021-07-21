@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 7716190850565286851}
   - component: {fileID: 7716190850565286850}
   - component: {fileID: 1677113391713498533}
+  - component: {fileID: 4113915304124408711}
   m_Layer: 0
   m_Name: gambol_gun
   m_TagString: Untagged
@@ -175,12 +176,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
+  name: Single shot
   range: 0
   force: 1
   blast: 1
   dmg: 4
-  pierce: 0
   knockback: 0
   backstep: 0
   twoHanded: 0
@@ -188,20 +188,124 @@ MonoBehaviour:
   melee: 0
   deployable: 0
   thrown: 0
-  sticky: {fileID: 0}
-  strikeTimes:
-  - 0.57
-  movementTimes: []
   attackTime: 0.77
   cost: 4
   variant: 0
+  pierce: 0
+  missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
+  sticky: {fileID: 0}
   parent: {fileID: 0}
-  name: Single shot
-  icon: {fileID: 21300000, guid: fab7691a7c89b794d85c41112966d9cb, type: 3}
+  strikeTimes:
+  - 0.57
+  movementTimes: []
   traceStart:
   - 0.55
   traceEnd:
   - 0.6
-  traceImg: {fileID: 6548718502037938243}
+  soundTimes:
+  - 0.55
   traceEnabler: 0
   traceDisabler: 0
+  soundPlayer: 0
+  icon: {fileID: 21300000, guid: fab7691a7c89b794d85c41112966d9cb, type: 3}
+  traceImg: {fileID: 6548718502037938243}
+  wpnSource: {fileID: 4113915304124408711}
+  effectClips:
+  - {fileID: 8300000, guid: e620f442f07d6624aad4afa13ac57f0a, type: 3}
+  - {fileID: 8300000, guid: 099cbd12f3b174040a30bc494e37d5f6, type: 3}
+--- !u!82 &4113915304124408711
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7716190850565286848}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

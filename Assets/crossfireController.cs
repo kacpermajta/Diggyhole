@@ -42,7 +42,13 @@ public class crossfireController : MonoBehaviour
     {
         Vector3 delPosition = Vector3.Normalize( Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         angle = Mathf.Max(-Mathf.PI / 2, Mathf.Min(Mathf.PI / 2, delPosition.y * 22));
-        Vector3 crosshairDestination = lookingPoint(3, false); 
+        Debug.Log(angle);
+        float distance;
+        if (thisAgent.weaponComp.melee)
+            distance = thisAgent.weaponComp.range;
+        else
+            distance = 3;
+        Vector3 crosshairDestination = lookingPoint(distance, false); 
         if (thisAgent.currentAgent)
         {
             spriteTransform.localPosition = crosshairDestination;
@@ -81,7 +87,8 @@ public class crossfireController : MonoBehaviour
 
     public Vector3 lookingPoint(float distance, bool left)
     {
-        return new Vector3(left ? -distance * Mathf.Cos(angle): distance * Mathf.Cos(angle), distance * Mathf.Sin(angle) , 0);
+        return new Vector3(left ? -distance * Mathf.Cos(angle+thisAgent.weaponComp.angleMod): distance * Mathf.Cos(angle + thisAgent.weaponComp.angleMod),
+            distance * Mathf.Sin(angle + thisAgent.weaponComp.angleMod) , 0);
     }
 
 }

@@ -94,8 +94,9 @@ public class missileController : MonoBehaviour
 
     public void GoTo(Transform target)
     {
+        Debug.Log("coming home");
         Vector3 direction = target.position - transform.position;
-        Vector3 translation = direction.normalized * Time.deltaTime * 30;
+        Vector3 translation = direction.normalized * Time.deltaTime * 200;
         if (direction.magnitude > translation.magnitude)
         {
             transform.position = transform.position + translation;

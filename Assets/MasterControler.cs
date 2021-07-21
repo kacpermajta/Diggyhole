@@ -18,10 +18,12 @@ public class MasterControler : MonoBehaviour
     public int teamnum;
     public AudioSource audioSource;
     public float soundValue;
+    public float musicValue;
 
     private static GameObject instance;
     Object[] myMusic;
     public AudioClip[] backClips;
+    public List<Color> colorList;
 
     public GameObject GetChar(int num)
     {
@@ -44,6 +46,7 @@ public class MasterControler : MonoBehaviour
         else
             Destroy(gameObject);
         ingame = false;
+        musicValue = 1;
 
         //audioSource.Play();
         //audioSource[0].Play();
@@ -66,6 +69,10 @@ public class MasterControler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
             playRandomMusic();
+
+
+
+        audioSource.volume =  GameValues.musicValue;
         if (ingame)
         {
 
@@ -80,6 +87,7 @@ public class MasterControler : MonoBehaviour
 
     public void RemoveTeam(team removed)
     {
+        colorList.Add(removed.colors);
         teams.Remove(removed);
     }
 
@@ -87,6 +95,8 @@ public class MasterControler : MonoBehaviour
     {
         team newTeam = new team();
         teams.Add(newTeam);
+        newTeam.colors = colorList[colorList.Count - 1];
+        colorList.RemoveAt(colorList.Count - 1);
         return newTeam;
     }
 
@@ -115,7 +125,10 @@ public class MasterControler : MonoBehaviour
             curTeam.charnum = 0;
 
     }
-
+    public void SetMusVol()
+    {
+        musicValue = thisMenuHandler.musicslider.value;
+    }
 
 }
 
@@ -138,12 +151,14 @@ public class troop
     {
         prefab = num;
     }
+
 }
 
 public class team
 {
     public List<troop> character;
     public int charnum;
+    public Color colors;
     public team()
     {
         character = new List<troop>();

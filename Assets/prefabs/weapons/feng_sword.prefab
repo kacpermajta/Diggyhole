@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 8020929389309682155}
   - component: {fileID: 2515887201543139051}
   - component: {fileID: 4272816017049404801}
+  - component: {fileID: -8754777062103329276}
   m_Layer: 0
   m_Name: feng_sword
   m_TagString: Untagged
@@ -174,12 +175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 0}
+  name: Sword strike
   range: 1.5
   force: 1
   blast: 2
   dmg: 20
-  pierce: 0
   knockback: 0
   backstep: 0
   twoHanded: 0
@@ -187,20 +187,127 @@ MonoBehaviour:
   melee: 1
   deployable: 0
   thrown: 0
-  sticky: {fileID: 0}
-  strikeTimes:
-  - 0.66
-  movementTimes: []
   attackTime: 1.1
   cost: 10
   variant: 0
+  pierce: 0
+  missile: {fileID: 0}
+  sticky: {fileID: 0}
   parent: {fileID: 0}
-  name: Sword strike
-  icon: {fileID: 21300000, guid: 91506aa7e88fc704e9ce5601f6f4d0e3, type: 3}
+  strikeTimes:
+  - 0.66
+  movementTimes: []
   traceStart:
   - 0.5
   traceEnd:
   - 0.95
-  traceImg: {fileID: 3465108088621199537}
+  soundTimes:
+  - 0.6
   traceEnabler: 0
   traceDisabler: 0
+  soundPlayer: 0
+  icon: {fileID: 21300000, guid: 91506aa7e88fc704e9ce5601f6f4d0e3, type: 3}
+  traceImg: {fileID: 3465108088621199537}
+  wpnSource: {fileID: -8754777062103329276}
+  effectClips:
+  - {fileID: 8300000, guid: b4be1edc50ba84e6086c70387c6b2901, type: 3}
+  - {fileID: 8300000, guid: 53095e7f9ab68412eac49ef285bf2e15, type: 3}
+  - {fileID: 8300000, guid: abc2dc2609eb24ca3944b4459bf37931, type: 3}
+  - {fileID: 8300000, guid: 144ac1321ffd340f1900a26d06d8cec0, type: 3}
+  - {fileID: 8300000, guid: 30e8ea32ae33242aab65836700cfb8ea, type: 3}
+--- !u!82 &-8754777062103329276
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4761138328946950684}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

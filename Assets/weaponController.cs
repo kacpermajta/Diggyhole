@@ -30,6 +30,8 @@ public class weaponController : MonoBehaviour
     /// </summary>
     public float pierce;
 
+    public float angleMod;
+
     #endregion
 
     #region objects
@@ -37,6 +39,7 @@ public class weaponController : MonoBehaviour
     public GameObject missile;
     public GameObject sticky;
     public Transform parent;
+    public Vector3 offset;
 
     #endregion
 
@@ -68,6 +71,7 @@ public class weaponController : MonoBehaviour
     void Start()
     {
         parent = transform.parent;
+        offset = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -99,9 +103,10 @@ public class weaponController : MonoBehaviour
         {
             transform.position = target.position;
         }
+        transform.localPosition += offset;
     }
 
-    void playRandomEffect()
+    public void playRandomEffect()
     {
         wpnSource.clip = effectClips[Random.Range(0, effectClips.Length)] as AudioClip;
         wpnSource.Play();

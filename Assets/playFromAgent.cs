@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class attackMade : StateMachineBehaviour
+public class playFromAgent : StateMachineBehaviour
 {
-    public animationHandler thisAgentController;
+    [Tooltip("0 for jump, 1 for land")]
+    public int variant;
+    public agentController agent;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
     //    
     //}
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        agent = animator.transform.parent.parent.gameObject.GetComponent<agentController>();
+        if (variant == 0)
+            agent.playRandomEffect(ref agent.jumpClips, agent.sounds);
+        if (variant == 1)
+            agent.playRandomEffect(ref agent.landClips, agent.sounds);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

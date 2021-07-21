@@ -33,6 +33,7 @@ public class MenuTeamHandler : MonoBehaviour
         GameObject.Destroy(newHandler.characterPreview);
         newHandler.characterPreview = GameObject.Instantiate(GameValues.gameMasterController.charPrefabs[0], newHandler.transform);
         newHandler.characterPreview.GetComponent<agentController>().SetPreview();
+        
 
     }
     public void Resize(int num)

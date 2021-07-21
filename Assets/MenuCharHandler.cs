@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuCharHandler : MonoBehaviour
 {
@@ -8,10 +9,12 @@ public class MenuCharHandler : MonoBehaviour
     public troop thisTroop;
     public team belonging;
     public MenuTeamHandler overseer;
+    public Image background;
+    public Text hpIndicator;
     // Start is called before the first frame update
     void Start()
     {
-        
+        background.color = belonging.colors;
     }
 
     // Update is called once per frame
@@ -47,6 +50,8 @@ public class MenuCharHandler : MonoBehaviour
     }
     public void addHealth(int num)
     {
+        thisTroop.hp += num;
+        hpIndicator.text = thisTroop.hp.ToString();
 
     }
 }

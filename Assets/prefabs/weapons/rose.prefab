@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 659929587033640127}
   - component: {fileID: 659929587033640126}
   - component: {fileID: 3739295567710405005}
+  - component: {fileID: 1592131375827526324}
   m_Layer: 0
   m_Name: rose
   m_TagString: Untagged
@@ -94,12 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missile: {fileID: 0}
+  name: Crescent Rose
   range: 3
   force: 1
   blast: 2
   dmg: 20
-  pierce: 0
   knockback: 0
   backstep: 0
   twoHanded: 1
@@ -107,23 +107,130 @@ MonoBehaviour:
   melee: 1
   deployable: 0
   thrown: 0
-  sticky: {fileID: 0}
-  strikeTimes:
-  - 0.85
-  movementTimes: []
   attackTime: 1.5
   cost: 10
   variant: 0
+  pierce: 0
+  missile: {fileID: 0}
+  sticky: {fileID: 0}
   parent: {fileID: 0}
-  name: Crescent Rose
-  icon: {fileID: 21300000, guid: cdf5bd44c4ce1c748900c7c8e1098392, type: 3}
+  strikeTimes:
+  - 0.85
+  movementTimes: []
   traceStart:
   - 0.66
   traceEnd:
   - 0.86
-  traceImg: {fileID: 176584038984774101}
+  soundTimes:
+  - 0.66
   traceEnabler: 0
   traceDisabler: 0
+  soundPlayer: 0
+  icon: {fileID: 21300000, guid: cdf5bd44c4ce1c748900c7c8e1098392, type: 3}
+  traceImg: {fileID: 176584038984774101}
+  wpnSource: {fileID: 1592131375827526324}
+  effectClips:
+  - {fileID: 8300000, guid: 57660f705fdfcda4aba6b5118b3831c9, type: 3}
+  - {fileID: 8300000, guid: a5dae65db4ccaf7448e3ab94edb7ff4c, type: 3}
+  - {fileID: 8300000, guid: 99c9d562f3249b540af41c6d76ffe5a7, type: 3}
+  - {fileID: 8300000, guid: 75e4cdb664b61a148bb702841f66cb0a, type: 3}
+  - {fileID: 8300000, guid: d96b99184365d384db092f67f21766f1, type: 3}
+--- !u!82 &1592131375827526324
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659929587033640124}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6417749503956540970
 GameObject:
   m_ObjectHideFlags: 0

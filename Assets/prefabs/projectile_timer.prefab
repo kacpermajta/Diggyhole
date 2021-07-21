@@ -149,7 +149,7 @@ MonoBehaviour:
   timed: 1
   explosive: 0
   damaging: 0
-  boomerang: 0
+  boomerang: 1
   comeback: 0
   lifetime: 3
   blast: 0
