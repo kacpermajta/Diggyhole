@@ -11,6 +11,7 @@ public class MenuHandler : MonoBehaviour
     public Slider musicslider;
     public MasterControler gameMaster;
     public AudioSource regualted;
+    public Button startButton;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class MenuHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(GameValues.musicValue + "; "+ GameValues.gameMasterController.teamnum);
+        //Debug.Log(GameValues.musicValue + "; "+ GameValues.gameMasterController.teamnum);
 
         //gameMaster = 
     }
@@ -71,6 +72,7 @@ public class MenuHandler : MonoBehaviour
         int i;
         float column = 0;
         int offset=0;
+        int valid = -1;
         for (i = 0; i < matchTeam.Count; i++)
         {
             if (i > 2)
@@ -82,10 +84,21 @@ public class MenuHandler : MonoBehaviour
             {
                 offset = i;
             }
+            if (matchTeam[i].thisTeam.character.Count > 0)
+                valid++;
+            else
+                valid = -10;
             matchTeam[i].transform.position = new Vector3(column -110, - offset*90, 0);
             matchTeam[i].Resize(i);
         }
         newTeamButton.transform.position = new Vector3(column -230.7f,  37.1f - (offset+1) * 90, 0);
+
+        if (valid > 0)
+        {
+            startButton.interactable = true;
+        }
+        else
+            startButton.interactable = false;
 
     }
 }

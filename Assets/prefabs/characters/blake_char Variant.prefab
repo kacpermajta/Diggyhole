@@ -213,19 +213,20 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[0]
       value: 
-      objectReference: {fileID: 7259185030402958776, guid: 6b0cf1c7031d9dc47be12883d95a150d,
+      objectReference: {fileID: 7259185030402958776, guid: 903bcee0ef5509244b8ce5ccf051e5ca,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[2]
       value: 
-      objectReference: {fileID: 7716190850565286848, guid: 00bda36ebab1b8f4884e2ff8297598e3,
+      objectReference: {fileID: 7259185030402958776, guid: 6b0cf1c7031d9dc47be12883d95a150d,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7716190850565286848, guid: 00bda36ebab1b8f4884e2ff8297598e3,
+        type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: auraColor.r
@@ -972,6 +973,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7679524666570757507, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327094165753438442, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3063763490766723837, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -987,15 +998,30 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4327094165753438442, guid: 6d4535a71792b4c418fe735a5f36c16c,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4959915304251485215, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_MaskInteraction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 779662772629671528, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 534329509663890448, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_text
+      value: Blake
+      objectReference: {fileID: 0}
+    - target: {fileID: 534329509663890448, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 534329509663890448, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d4535a71792b4c418fe735a5f36c16c, type: 3}

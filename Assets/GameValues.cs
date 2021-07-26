@@ -12,7 +12,7 @@ public class GameValues : MonoBehaviour
     public static Image weaponIcon;
     public static Text weaponName;
     public static Text ap;
-    public static float musicValue=0.5f;
+    public static float musicValue=0.3f;
     public float soundValue;
 
     // Start is called before the first frame update

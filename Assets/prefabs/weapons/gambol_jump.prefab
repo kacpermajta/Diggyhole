@@ -99,7 +99,7 @@ MonoBehaviour:
   range: 0.5
   force: 0.6
   blast: 1
-  dmg: 6
+  dmg: 2
   knockback: 0
   backstep: -1
   twoHanded: 0
@@ -108,12 +108,14 @@ MonoBehaviour:
   deployable: 0
   thrown: 1
   attackTime: 5
-  cost: 3
+  cost: 2
   variant: 0
   pierce: 0
+  angleMod: 0
   missile: {fileID: 718027588937817871, guid: cbc66ea463bf89d48ac0dafdaa311cdf, type: 3}
   sticky: {fileID: 0}
   parent: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
   strikeTimes:
   - 0.5
   movementTimes:

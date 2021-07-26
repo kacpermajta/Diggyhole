@@ -51,6 +51,10 @@ public class MenuCharHandler : MonoBehaviour
     public void addHealth(int num)
     {
         thisTroop.hp += num;
+        if(thisTroop.hp<=0)
+        {
+            thisTroop.hp = 5;
+        }
         hpIndicator.text = thisTroop.hp.ToString();
 
     }

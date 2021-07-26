@@ -197,7 +197,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 54634071}
   m_OnClick:
     m_PersistentCalls:
@@ -1060,6 +1060,7 @@ MonoBehaviour:
   musicslider: {fileID: 1711504187}
   gameMaster: {fileID: 0}
   regualted: {fileID: 0}
+  startButton: {fileID: 54634070}
 --- !u!114 &1128059823 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3961959260115857869, guid: 952599512fab5af469817fd03f2e7f20,

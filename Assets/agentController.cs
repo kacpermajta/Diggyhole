@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 
 
@@ -18,13 +19,14 @@ public class agentController : MonoBehaviour
     float gravity = 0.03f;
     public Rigidbody2D m_Rigidbody2D;
     public CapsuleCollider2D charCollider;
-    public TextMesh hpIndicator;
-    public TextMesh nametag;
+    public TMP_Text hpIndicator;
+    public TMP_Text nametag;
     // public CharacterController thisController;
     public Animator thisAnimator;
-    public bool isGrounded, forcegrounded;
+    public bool  forcegrounded;
     public bool currentAgent;
     public float jumping, sway, blasted, blaststart;
+    public float kineForceX, kineForceY, kineForceHurt;
     public float jumpcharge;
     public float vertical, horizontal;
     public bool facingLeft, melee;
@@ -46,6 +48,7 @@ public class agentController : MonoBehaviour
 
     private Vector3 m_Velocity = Vector3.zero;
     public int hp = 100;
+    public bool alive;
 
     public bool airborneVal;
     public float airborneNum;
@@ -85,8 +88,11 @@ public class agentController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        if (forcegrounded)
+        alive = true;
+        kineForceHurt = 0;
+        airborneNum = 2;
+        airborneVal = true;
+        if (grounding.forceGrounded)
         {
             hpIndicator.text = "";
             nametag.text = "";
@@ -109,44 +115,37 @@ public class agentController : MonoBehaviour
         attacking = 0;
         //running = thisAnimator.GetParameter(1);
         //airborne = thisAnimator.GetParameter(2);
-        if(!forcegrounded)
+        if(!grounding.forceGrounded)
             curWpn = EquipWeapon(1);
         jumpcharge = 0;
+        kineForceX = 0;
+        kineForceY = 0;
     }
 
     private void FixedUpdate()
     {
 
-        if (forcegrounded)
-            isGrounded = true;
-        else
+
+        if(!grounding.forceGrounded)
         {
             if (hp > 0 && transform.position.y < 0)
                 Damage(1);
 
-            bool wasGrounded = isGrounded;
-            isGrounded = false;
 
-            // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, -0.75f), 0.5f);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i].gameObject != gameObject)
-                {
-                    isGrounded = true;
-                    //               if (!wasGrounded)
-                    //                   OnLandEvent.Invoke();
-                }
-            }
         }
-
-        if (airborneVal)
-            airborneNum = ReachTo(airborneNum, 12,5);
-        else if (airborneNum > 1f)
-            airborneNum = 1f;
+        if (Input.GetKey(KeyCode.W) && grounding.high )
+            airborneNum = 4;
+        else if (airborneNum == 4)
+            airborneNum = 2;
+        else if (airborneVal)
+        {
+                ReachTo(ref airborneNum, 2, 2);
+        }
+            
+        //else if (airborneNum > 1f)
+        //    airborneNum = 1f;
         else
-            airborneNum = ReachTo(airborneNum, 0,5);
+            airborneNum = 0;
         thisAnimator.SetFloat("airbornenum", airborneNum);
 
         /*
@@ -173,57 +172,156 @@ public class agentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
-        
-        if (blasted != 0)
+        vertical = kineForceY;
+        horizontal = kineForceX;
+        if (vertical > 0.3f)
+            vertical = 0.3f;
+        if (vertical < -0.3f)
+            vertical = -0.3f;
+        if (horizontal > 0.3f)
+            horizontal = 0.3f;
+        if (horizontal < -0.3f)
+            horizontal = -0.3f;
+        if (currentAgent)
         {
+
+
+
+            if (outro > 0)
+            {
+                outro -= Time.deltaTime;
+                if (outro <= 0)
+                {
+                    SetInactive();
+                    return;
+                }
+
+            }
+            else if (actionPts <= 0)
+            {
+                outro = 4;
+
+
+                playRandomEffect(ref doneClips, voice);
+            }
+
+            if (attacking <= 0 && actionPts > 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    curWpn = EquipWeapon(0);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    curWpn = EquipWeapon(1);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    curWpn = EquipWeapon(2);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    curWpn = EquipWeapon(3);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+                    curWpn = EquipWeapon(4);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha6))
+                {
+                    curWpn = EquipWeapon(5);
+                }
+            }
+            thisAnimator.SetBool("running", false);
+
+            if (Input.GetKey(KeyCode.A) && sway == 0)
+            {
+                if (jumping == 0 && leap == 0 &&( kineForceX == 0 || kineForceY<0.1 ) && attacking <= 0)
+                {
+                    horizontal = -moveSpeed;
+                    SetDirLeft(true);
+                    thisAnimator.SetBool("running", true);
+                    if (grounding.grounded && !sounds.isPlaying)
+                    {
+                        playRandomEffect(ref runClips, sounds);
+                    }
+                }
+
+            }
+            if (Input.GetKey(KeyCode.D) && sway == 0)
+            {
+                if (jumping == 0 && leap == 0 && (kineForceX == 0 || kineForceY < 0.1) && attacking <= 0)
+                {
+                    horizontal = moveSpeed;
+                    SetDirLeft(false);
+                    thisAnimator.SetBool("running", true);
+                    if (grounding.grounded && !sounds.isPlaying)
+                    {
+                        playRandomEffect(ref runClips, sounds);
+                    }
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Mouse0) && actionPts > 0 && airborneNum < 3 && weaponComp.cost > 0)
+            {
+                thisAnimator.SetBool("attack", true);
+                attacking = weaponComp.attackTime;
+                attack = 0;
+                attackmove = 0;
+                weaponComp.traceEnabler = 0;
+                weaponComp.traceDisabler = 0;
+                weaponComp.soundPlayer = 0;
+
+            }
+
+            if (jumping > 0)
+            {
+                jumping += Time.deltaTime;
+                kineForceY = jumpSpeed;
+                //Debug.Log("jump: " + kineForceY);
+                if (jumping > jumpDur)
+                    jumping = 0;
+                if (leap != 0)
+                {
+                    kineForceX = leapSpeed * leap;
+
+                }
+
+            }
+        }
+        else
+        {
+            jumping = 0;
+            sway = 0;
+            if (kineForceX > 0)
+            {
+                SetDirLeft(true);
+            }
+            else if(kineForceX<0)
+            {
+                SetDirLeft(false);
+            }
+        }
+
+
+
+
+
+        if (!grounding.grounded || kineForceX != 0 ||kineForceY !=0||!alive)
+        {
+
+
+            if (airborneNum < 3 || kineForceY > -0.05f || !alive)
+                kineForceY -= gravity * Time.deltaTime * 3;
+            else
+                kineForceY = -0.05f;
+            //Debug.Log("falling: " + kineForceY);
             setAirborne(true);
             if (attacking > 0)
             {
                 ResolveAttack();
             }
-            else
-            //if (!thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("shoot"))
-            {
 
-                if (currentAgent)
-                {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        SetDirLeft(true);
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        SetDirLeft(false);
-
-                    }
-                    if (outro > 0)
-                    {
-                        outro -= Time.deltaTime;
-                        if (outro <= 0)
-                        {
-                            SetInactive();
-                            return;
-                        }
-
-                    }
-                    else if (actionPts <= 0)
-                        outro = 4;
-                }
-                else
-                {
-                    if (horizontal > 0)
-                    {
-                        SetDirLeft(true);
-                    }
-                    else
-                    {
-                        SetDirLeft(false);
-                    }
-                }
-
-            }
 
 
 
@@ -232,144 +330,139 @@ public class agentController : MonoBehaviour
                 blaststart -= Time.deltaTime;
 
             }
+            else if (jumping == 0 && alive)
+            {
+                if (!grounding.forceGrounded && grounding.touching && Mathf.Abs(m_Rigidbody2D.velocity.magnitude) < 0.5 && kineForceHurt > 0)
+                {
+                    //Debug.Log("przestój");
+                    //landing = false;
+
+                    int strain = (int)((kineForceHurt + Mathf.Abs(kineForceX) + Mathf.Abs(kineForceY)) * 30);
+                    //Mathf.Abs((int)kineForceX * 10) + Mathf.Abs((int)kineForceY * 10);
+                    if (grounding.grounded || grounding.grabby)
+                        strain /= 2;
+                    if (strain > 1)
+                    {
+                        Debug.Log("strain: " + strain);
+                        Damage(strain);
+
+                        kineForceX = 0;
+                        kineForceY = 0;
+                        kineForceHurt = 0;
+                    }
+                }
+
+                //blasted -= Time.deltaTime;
+
+                //blasted -= Time.deltaTime*9;
+                //vertical -= gravity * Time.deltaTime*9;
+                if (Mathf.Abs(m_Rigidbody2D.velocity.x) < 0.2f)
+                    leap = 0;
+
+
+                if (grounding.touching)
+                {
+
+                    kineForceHurt += ReachTo(ref kineForceX, 0, 4);
+
+                    if(grounding.grounded||kineForceY>0)
+                        kineForceHurt += ReachTo(ref kineForceY, 0, 4);
+                    //Debug.Log("landing: " + kineForceY);
+                    Debug.Log("charge: " + kineForceHurt+", speed: "+ m_Rigidbody2D.velocity.magnitude);
+                    sway = 0;
+
+                }
+                else
+                    kineForceHurt = 0;
+            }
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                if (jumping > 0 && leap == 0 && jumping < swayWindow)
+                {
+
+                    
+                        playRandomEffect(ref gruntClips, sounds);
+                    
+                    sway = 0.1f;
+                    thisAnimator.SetBool("sway", true);
+                    airborneNum = 1;
+
+
+                }
+
+            }
+
+
+            if (kineForceY<-0.11f && Input.GetKey(KeyCode.S))
+            {
+                
+
+                thisAnimator.SetBool("down", true);
+                vertical *= 1.3f;
+                impact += Mathf.Abs( kineForceY/2);
+            }
             else 
             {
-                //blasted -= Time.deltaTime;
-                if (isGrounded)
-                    blasted = ReachTo(blasted, 0, 7);
-                    //blasted -= Time.deltaTime*9;
-                vertical -= gravity * Time.deltaTime*9;
 
-                if (Mathf.Abs(m_Rigidbody2D.velocity.magnitude) < 0.1f)
+                thisAnimator.SetBool("down", false);
+                if (!grounding.grounded)
+                    impact = 0;
+
+                
+            }
+
+            if (sway > 0)
+            {
+                vertical += swaySpeed;
+                if (facingLeft)
                 {
-                    if (!landing)
-                    {
-                        landing = false;
-                        Damage(Mathf.Abs((int)blasted*10));
-                    }
-                    blasted = 0;
+                    horizontal += swaySpeed;
+                }
+                else
+                {
+                    horizontal -= swaySpeed;
+                }
+
+                sway += Time.deltaTime; 
+                if (sway > swayDur * agility)
+                {
+                    sway = 0;
+                    thisAnimator.SetBool("sway", false);
                 }
             }
+
+
+
 
         }
         else
         {
-            horizontal = 0;
-            vertical = -gravity;
+            //horizontal = 0;
+            //vertical = -gravity;
             if (!currentAgent)
             {
-                if (isGrounded)
-                {
-                    setAirborne(false);
-                }
-                else
-                {
-                    setAirborne(true);
-                }
+                
+                setAirborne(false);
+                vertical -= 0.5f;
+                
             }
             else
             {
 
-                if (outro > 0)
-                {
-                    outro -= Time.deltaTime;
-                    if (outro <= 0)
-                    {
-                        SetInactive();
-                        return;
-                    }
 
-                }
-                else if (actionPts <= 0)
-                {
-                    outro = 4;
+                //horizontal = 0;
+                //vertical = -gravity;
 
-
-                    playRandomEffect(ref doneClips, voice);
-                }
-                horizontal = 0;
-                vertical = -gravity;
-                if (attacking <= 0&& actionPts>0)
-                {
-                    if (Input.GetKeyDown(KeyCode.Alpha1))
-                    {
-                        curWpn = EquipWeapon(0);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha2))
-                    {
-                        curWpn = EquipWeapon(1);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha3))
-                    {
-                        curWpn = EquipWeapon(2);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha4))
-                    {
-                        curWpn = EquipWeapon(3);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha5))
-                    {
-                        curWpn = EquipWeapon(4);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha6))
-                    {
-                        curWpn = EquipWeapon(5);
-                    }
-                }
-                thisAnimator.SetBool("running", false);
+                
 
                 if (attacking > 0)
                 {
                     ResolveAttack();
                 }
-
-
-
                 else //if (!thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("shoot"))
                 {
-                    if (Input.GetKey(KeyCode.A) && sway == 0)
-                    {
-                        if (jumping == 0 && leap == 0)
-                        {
-                            horizontal = -moveSpeed;
-                            SetDirLeft(true);
-                            thisAnimator.SetBool("running", true);
-                            if(isGrounded && !sounds.isPlaying)
-                            {
-                                playRandomEffect(ref runClips, sounds);
-                            }
-                        }
 
-                    }
-                    if (Input.GetKey(KeyCode.D) && sway == 0)
-                    {
-                        if (jumping == 0 && leap == 0)
-                        {
-                            horizontal = moveSpeed;
-                            SetDirLeft(false);
-                            thisAnimator.SetBool("running", true);
-                            if (isGrounded && !sounds.isPlaying)
-                            {
-                                playRandomEffect(ref runClips, sounds);
-                            }
-                        }
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.Mouse0)&&actionPts>0&& airborneNum<10 &&weaponComp.cost>0)
-                {
-                    thisAnimator.SetBool("attack", true);
-                    attacking = weaponComp.attackTime;
-                    attack = 0;
-                    attackmove = 0;
-                    weaponComp.traceEnabler = 0;
-                    weaponComp.traceDisabler = 0;
-                    weaponComp.soundPlayer = 0;
-
-                }
-
-
-                if (isGrounded)
-                {
                     if (impact > 0)
                     {
 
@@ -384,6 +477,12 @@ public class agentController : MonoBehaviour
                     setAirborne(false);
                     jumping = 0;
                     leap = 0;
+
+                    kineForceY = 0;
+
+
+
+
                     if (airborneNum < 0.5)
                     {
                         if (Input.GetKey(KeyCode.W))
@@ -402,104 +501,52 @@ public class agentController : MonoBehaviour
                                 playRandomEffect(ref gruntClips, voice);
                             }
                             jumping = 0.1f;
-                            leap = 1;
+
+                            if (facingLeft)
+                            {
+
+                                leap = -1;
+                            }
+                            else
+                            {
+
+                                leap = 1;
+                            }
                             setAirborne(true);
                         }
                     }
+
+
                 }
-                else
+
+
+
+
+                //podbicie w kroku
+                if (horizontal != 0)
                 {
-                    if (Mathf.Abs(m_Rigidbody2D.velocity.x) < 0.2f)
-                        leap = 0;
-                    setAirborne(true);
-                    if (Input.GetKeyDown(KeyCode.W))
-                    {
-                        if (jumping > 0 && leap == 0 && jumping < swayWindow)
-                        {
-
-                            if (airborneNum == 0)
-                            {
-                                playRandomEffect(ref gruntClips, sounds);
-                            }
-                            sway = 0.1f;
-                            thisAnimator.SetBool("sway", true);
-                            airborneNum = 1;
-
-
-                        }
-                        else
-                        {
-                            airborneNum = Mathf.Min(airborneNum,9f);
-                        }
-                    }
-
-                    if (sway > 0)
-                    {
-                        vertical *= -1;
-                        if (facingLeft)
-                        {
-                            horizontal += swaySpeed;
-                        }
-                        else
-                        {
-                            horizontal -= swaySpeed;
-                        }
-
-                        sway += Time.deltaTime; if (sway > swayDur*agility)
-                        {
-                            sway = 0;
-                            thisAnimator.SetBool("sway", false);
-                        }
-                    }
-                    else if(airborneNum>10)
-                    {
-                        if (Input.GetKey(KeyCode.S))
-                        {
-                           
-                            thisAnimator.SetBool("down", true);
-                            vertical *= 3;
-                            impact += Time.deltaTime;
-                        }
-                        else
-                        {
-
-                            thisAnimator.SetBool("down", false);
-                            impact = 0;
-
-                        }
-                    }
-                }
-                if (jumping > 0)
-                {
-                    jumping += Time.deltaTime;
-                    vertical = jumpSpeed;
-                    if (jumping > jumpDur)
-                        jumping = 0;
-                }
-                if (leap > 0)
-                {
-
-                    if (facingLeft)
-                    {
-                        horizontal -= leapSpeed * leap;
-                    }
-                    else
-                    {
-                        horizontal += leapSpeed * leap;
-                    }
-
+                    if (!grounding.footing)
+                        vertical -=2* gravity;
+                    //else 
+                    //    vertical += gravity;
                 }
 
-                if (horizontal != 0 && isGrounded)
-                {
-                    //if (Mathf.Abs(m_Rigidbody2D.velocity.x) < 4f)
-                    vertical += jumpSpeed;
-                }
 
 
 
                 //thisController.Move(new Vector3(horizontal, vertical, 0));
 
+            }
+        }
+        if (grounding.grabby)
+        {
+            if (facingLeft)
+            {
+                horizontal = 0.01f;
+            }
+            else
+            {
+                horizontal = -0.01f;
             }
         }
         // Move the character by finding the target velocity
@@ -559,8 +606,14 @@ public class agentController : MonoBehaviour
         float multipier = (range - (hitPoint - location).magnitude)/ range;
         Damage((int)(damage * multipier));
         blasted = force  * multipier;
-        horizontal = force * 0.2f * direction.x  * multipier;
-        vertical = force * 0.2f * direction.y  * multipier;
+
+        kineForceX += force * 0.2f * direction.x * multipier;
+        kineForceY += force * 0.2f * direction.y * multipier;
+        Debug.Log("blasted: " + kineForceY);
+        //horizontal = force * 0.2f * direction.x  * multipier;
+        //vertical = force * 0.2f * direction.y  * multipier;
+
+
         setAirborne(true);
         blaststart = 0.1f;
         
@@ -628,7 +681,7 @@ public class agentController : MonoBehaviour
                 {
                     if (weaponComp.deployable)
                     {
-                        Debug.Log("ziuum");
+                        //Debug.Log("ziuum");
                         GameObject deployedObject = GameObject.Instantiate(weaponComp.missile, (weaponComp.missile.GetComponent<deployabe>().ObjEntryType == deployabe.entryType.agent) ? transform.position :
                         new Vector3(crossfireComp.spriteTransform.position.x, crossfireComp.spriteTransform.position.y, 0),
                         (weaponComp.missile.GetComponent<deployabe>().ObjEntryType == deployabe.entryType.crosshairAngled) ?
@@ -727,8 +780,13 @@ public class agentController : MonoBehaviour
         
         
         blasted = Mathf.Abs( force) ;
-        horizontal = force * 0.2f * direction.x ;
-        vertical = force * 0.2f * direction.y ;
+
+
+        //horizontal = force * 0.2f * direction.x;
+        //vertical = force * 0.2f * direction.y;
+
+        kineForceX = force * 0.2f * direction.x;
+        kineForceY = force * 0.2f * direction.y;
         setAirborne(true);
         blaststart = 0.1f;
 
@@ -751,41 +809,46 @@ public class agentController : MonoBehaviour
 
     public void Damage(int amount)
     {
+        Debug.Log("benc: " + amount);
 
-        playRandomEffect(ref hitClips, voice);
-        
-        auragone.Emit(amount / 2);
-
-        if (Hurt(amount))
+        if (amount > 0)
         {
-            auragone.Emit(30);
-            hp = 0;
-            thisAnimator.SetBool("dead", true);
-            gameObject.GetComponent<Collider2D>().enabled = false;
-            if(teamLogic.character.IndexOf(troopLogic)<=teamLogic.charnum)
-            {
-                teamLogic.charnum--;
-                if (teamLogic.charnum < 0)
-                    teamLogic.charnum = 0;
-            }
-            teamLogic.character.Remove(troopLogic);
+            playRandomEffect(ref hitClips, voice);
 
-            if (teamLogic.character.Count == 0)
+            auragone.Emit(amount / 2);
+
+            if (Hurt(amount))
             {
-                if (GameValues.gameMasterController.teams.IndexOf(teamLogic) <= GameValues.gameMasterController.teamnum)
+                auragone.Emit(30);
+                hp = 0;
+                alive = false;
+                thisAnimator.SetBool("dead", true);
+                gameObject.GetComponent<Collider2D>().enabled = false;
+                if (teamLogic.character.IndexOf(troopLogic) <= teamLogic.charnum)
                 {
-                    GameValues.gameMasterController.teamnum--;
-                    if (GameValues.gameMasterController.teamnum < 0)
-                        GameValues.gameMasterController.teamnum = 0;
+                    teamLogic.charnum--;
+                    if (teamLogic.charnum < 0)
+                        teamLogic.charnum = 0;
                 }
-                GameValues.gameMasterController.teams.Remove(teamLogic);
-                if (GameValues.gameMasterController.teams.Count == 1)
-                    GameValues.gameMasterController.EndGame();
-                        
-            }
-            if(currentAgent)
-            {
-                SetInactive();
+                teamLogic.character.Remove(troopLogic);
+
+                if (teamLogic.character.Count == 0)
+                {
+                    if (GameValues.gameMasterController.teams.IndexOf(teamLogic) <= GameValues.gameMasterController.teamnum)
+                    {
+                        GameValues.gameMasterController.teamnum--;
+                        if (GameValues.gameMasterController.teamnum < 0)
+                            GameValues.gameMasterController.teamnum = 0;
+                    }
+                    GameValues.gameMasterController.teams.Remove(teamLogic);
+                    if (GameValues.gameMasterController.teams.Count == 1)
+                        GameValues.gameMasterController.EndGame();
+
+                }
+                if (currentAgent)
+                {
+                    SetInactive();
+                }
             }
         }
     }
@@ -795,20 +858,33 @@ public class agentController : MonoBehaviour
     /// <param name="value">initial value of variable</param>
     /// <param name="target">target value of variable</param>
     /// <returns></returns>
-    public float ReachTo(float value, float target)
+    public float ReachTo(ref float value, float target)
     {
-        return ReachTo(value, target, 1);
+        return ReachTo(ref value, target, 1);
     }
-    public float ReachTo(float value, float target, float multiplier)
+    public float ReachTo(ref float value, float target, float multiplier)
     {
-        if (Mathf.Abs(target - value) < Time.deltaTime)
-            return target;
+        if (Mathf.Abs(target - value) < Time.deltaTime * multiplier)
+        {
+            value = target;
+            return Mathf.Abs(target - value);
+        }
+            
         else
         {
             if (value > target)
-                return value - Time.deltaTime*multiplier;
+            {
+                value -= Time.deltaTime * multiplier;
+                
+            }
+                
             else
-                return value + Time.deltaTime * multiplier;
+            {
+                value += Time.deltaTime * multiplier;
+            }
+            return Time.deltaTime * multiplier;
+
+
         }
     }
 
@@ -819,7 +895,7 @@ public class agentController : MonoBehaviour
     }
     public void SetPreview()
     {
-        forcegrounded = true;
+        grounding.forceGrounded = true;
         currentAgent = false;
         transform.localPosition = new Vector3(-0.4f, -1, 0);
         transform.localScale = new Vector3(13, 13, 1);

@@ -42,7 +42,7 @@ public class crossfireController : MonoBehaviour
     {
         Vector3 delPosition = Vector3.Normalize( Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         angle = Mathf.Max(-Mathf.PI / 2, Mathf.Min(Mathf.PI / 2, delPosition.y * 22));
-        Debug.Log(angle);
+//        Debug.Log(angle);
         float distance;
         if (thisAgent.weaponComp.melee)
             distance = thisAgent.weaponComp.range;

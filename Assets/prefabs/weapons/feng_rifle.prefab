@@ -177,9 +177,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: White Feng rifle
   range: 0
-  force: 1
+  force: 0.7
   blast: 1
-  dmg: 10
+  dmg: 8
   knockback: 0
   backstep: 0
   twoHanded: 1
@@ -191,9 +191,11 @@ MonoBehaviour:
   cost: 10
   variant: 1
   pierce: 0
+  angleMod: 0
   missile: {fileID: 718027588937817871, guid: 022b6358c2da41f4f978a5e111fa6571, type: 3}
   sticky: {fileID: 0}
   parent: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
   strikeTimes:
   - 0.45
   - 0.67

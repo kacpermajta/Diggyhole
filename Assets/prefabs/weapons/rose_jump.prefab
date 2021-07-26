@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b27379350c2d449e3b00b8aa1b0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Sniper mode
+  name: Crescent boost
   range: 3
   force: 0.5
   blast: 1

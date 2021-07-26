@@ -378,13 +378,14 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[4]
       value: 
-      objectReference: {fileID: 4761138328946950684, guid: fe7e61acbaa5cfc4ebec3298dd905b88,
+      objectReference: {fileID: 7504870367290440523, guid: b9e9046beada20b45a8be0b93ffad9c4,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4761138328946950684, guid: a5227cb0d4b00204f9db62e8a15d694f,
+        type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[1]
@@ -400,13 +401,13 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[0]
       value: 
-      objectReference: {fileID: 4761138328946950684, guid: 6f016d22ca280a847b579e560092ba7e,
+      objectReference: {fileID: 4761138328946950684, guid: fe7e61acbaa5cfc4ebec3298dd905b88,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: weapons.Array.data[2]
       value: 
-      objectReference: {fileID: 7504870367290440523, guid: b9e9046beada20b45a8be0b93ffad9c4,
+      objectReference: {fileID: 4761138328946950684, guid: 6f016d22ca280a847b579e560092ba7e,
         type: 3}
     - target: {fileID: 5981602438243912420, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
@@ -544,11 +545,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 3063763490766723837, guid: 6d4535a71792b4c418fe735a5f36c16c,
+    - target: {fileID: 7679524666570757507, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 2100000, guid: 3f3d87f5d3fdfdb4692e5a4faf477600, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4327094165753438442, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -594,6 +595,11 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key1.b
       value: 0.011764706
       objectReference: {fileID: 0}
+    - target: {fileID: 3063763490766723837, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f3d87f5d3fdfdb4692e5a4faf477600, type: 2}
     - target: {fileID: 6234440316277309686, guid: 6d4535a71792b4c418fe735a5f36c16c,
         type: 3}
       propertyPath: m_IsActive
@@ -603,6 +609,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 779662772629671528, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 534329509663890448, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_text
+      value: Goon
+      objectReference: {fileID: 0}
+    - target: {fileID: 534329509663890448, guid: 6d4535a71792b4c418fe735a5f36c16c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d4535a71792b4c418fe735a5f36c16c, type: 3}
